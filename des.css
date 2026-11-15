@@ -1,0 +1,598 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #F8EBDD;
+    color: #70564C;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+}
+/* NAVIGATION BAR */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 7%;
+    background-color: #FFF9F0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #A97878;
+}
+
+.navbar nav {
+    display: flex;
+    gap: 35px;
+}
+
+.navbar nav a {
+    text-decoration: none;
+    color: #806F62;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.navbar nav a:hover,
+.navbar nav a.active {
+    color: #A97878;
+}
+/* NAVBAR */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 7%;
+    background: #FFF9F0;
+    border-bottom: 1px solid #E8D9C8;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 700;
+    color: #A97878;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 35px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #665044;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #8F5F58;
+}
+
+/* DESTINATION HERO SECTION */
+
+.destination-hero {
+    min-height: 480px;
+    background:
+        linear-gradient(
+            rgba(45, 35, 30, 0.35),
+            rgba(45, 35, 30, 0.45)
+        ),
+        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee")
+        center/cover no-repeat;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.hero-content {
+    max-width: 750px;
+    color: #FFF9F0;
+}
+
+.hero-label {
+    font-size: 12px;
+    letter-spacing: 4px;
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+.hero-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 58px;
+    margin-bottom: 18px;
+}
+
+.hero-content > p:not(.hero-label) {
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+.destination-search {
+    display: flex;
+    background: #FFF9F0;
+    padding: 8px;
+    border-radius: 10px;
+    max-width: 550px;
+    margin: auto;
+}
+
+.destination-search input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 12px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.destination-search button {
+    background: #A97878;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.destination-search button:hover {
+    background: #8F5F58;
+}
+
+/* POPULAR DESTINATIONS SECTION */
+
+.popular-destinations {
+    padding: 80px 8%;
+    background-color: #F8EBDD;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.section-label {
+    color: #A97878;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+}
+
+.section-heading h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    color: #70564C;
+    margin-bottom: 12px;
+}
+
+.section-heading > p:last-child {
+    color: #8B7770;
+    font-size: 14px;
+}
+
+/* DESTINATION GRID */
+
+.destination-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+}
+
+.destination-card {
+    background-color: #FFF9F0;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 5px 18px rgba(80, 55, 40, 0.08);
+    transition: 0.3s ease;
+}
+
+.destination-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(80, 55, 40, 0.14);
+}
+
+.destination-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+}
+
+.destination-info {
+    padding: 22px;
+}
+
+.destination-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 23px;
+    color: #70564C;
+    margin-bottom: 10px;
+}
+
+.destination-info p {
+    color: #8B7770;
+    font-size: 13px;
+    line-height: 1.7;
+    min-height: 44px;
+    margin-bottom: 18px;
+}
+
+.destination-info button {
+    background-color: #A97878;
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.destination-info button:hover {
+    background-color: #8F5F58;
+}
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 900px) {
+    .destination-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .destination-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-heading h2 {
+        font-size: 30px;
+    }
+
+    .popular-destinations {
+        padding: 55px 6%;
+    }
+}
+
+/* EXPLORE BY CATEGORY */
+
+.explore-category {
+    padding: 80px 8%;
+    background-color: #FFF9F0;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.category-card {
+    height: 300px;
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.category-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.category-card:hover img {
+    transform: scale(1.08);
+}
+
+.category-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(35, 25, 20, 0.75),
+        transparent 75%
+    );
+}
+
+.category-overlay {
+    position: absolute;
+    bottom: 25px;
+    left: 22px;
+    z-index: 2;
+    color: white;
+}
+
+.category-overlay h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 25px;
+    margin-bottom: 7px;
+}
+
+.category-overlay p {
+    font-size: 12px;
+    color: #F8EBDD;
+}
+
+/* CATEGORY RESPONSIVE */
+
+@media (max-width: 900px) {
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.explore-btn {
+    display: inline-block;
+    background-color: #A97878;
+    color: white;
+    text-decoration: none;
+    padding: 11px 20px;
+    border-radius: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.explore-btn:hover {
+    background-color: #8F5F58;
+    transform: translateY(-2px);
+}
+/* =====================================
+   BEST MONTHS TO TRAVEL - PREMIUM DESIGN
+===================================== */
+
+.travel-months {
+    padding: 95px 8%;
+    background: linear-gradient(
+        180deg,
+        #faf7f3 0%,
+        #f5eee9 100%
+    );
+}
+
+/* SECTION HEADING */
+
+.travel-months .section-heading {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.travel-months .section-label {
+    color: #b78383;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 13px;
+}
+
+.travel-months .section-heading h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 39px;
+    color: #57463f;
+    margin-bottom: 12px;
+}
+
+.travel-months .section-heading > p:last-child {
+    color: #998980;
+    font-size: 14px;
+}
+
+/* CHART CONTAINER */
+
+.travel-chart-container {
+    max-width: 1050px;
+    margin: auto;
+    padding: 38px 40px 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #eee2dc;
+    border-radius: 22px;
+    box-shadow: 0 15px 45px rgba(112, 78, 65, 0.08);
+    transition: 0.3s ease;
+}
+
+.travel-chart-container:hover {
+    box-shadow: 0 20px 50px rgba(112, 78, 65, 0.12);
+    transform: translateY(-3px);
+}
+
+/* CHART HEADER */
+
+.chart-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 28px;
+}
+
+.chart-heading h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 25px;
+    color: #57463f;
+    margin: 0 0 8px;
+}
+
+.chart-heading p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: #a2948b;
+    margin: 0;
+}
+
+.chart-tag {
+    background: #f7eae6;
+    color: #a47575;
+    padding: 10px 17px;
+    border: 1px solid #eedbd5;
+    border-radius: 30px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* PEAK MONTH HIGHLIGHT */
+
+.peak-month-card {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    padding: 20px 23px;
+    margin-bottom: 25px;
+    background: linear-gradient(
+        110deg,
+        #f8eeea,
+        #fbf7f3
+    );
+    border: 1px solid #f0e2dc;
+    border-radius: 15px;
+}
+
+.peak-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ead2cc;
+    color: #986d6c;
+    border-radius: 13px;
+    font-size: 22px;
+}
+
+.peak-info {
+    flex: 1;
+}
+
+.peak-info span {
+    color: #b78383;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+}
+
+.peak-info h4 {
+    font-family: 'Playfair Display', serif;
+    color: #57463f;
+    font-size: 22px;
+    margin: 4px 0;
+}
+
+.peak-info p {
+    color: #9a8b82;
+    font-size: 11px;
+    margin: 0;
+}
+
+.peak-score {
+    text-align: right;
+}
+
+.peak-score h3 {
+    display: inline;
+    font-family: 'Playfair Display', serif;
+    font-size: 31px;
+    color: #a47575;
+    margin: 0;
+}
+
+.peak-score span {
+    color: #aa9a91;
+    font-size: 11px;
+}
+
+/* CHART */
+
+#travelMonthsChart {
+    min-height: 350px;
+}
+
+.chart-note {
+    margin-top: 15px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: #b1a39a;
+    text-align: right;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+    .travel-months {
+        padding: 65px 5%;
+    }
+
+    .travel-months .section-heading h2 {
+        font-size: 31px;
+    }
+
+    .travel-chart-container {
+        padding: 25px 17px;
+    }
+
+    .chart-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .peak-month-card {
+        padding: 15px;
+        gap: 12px;
+    }
+
+    .peak-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .peak-info h4 {
+        font-size: 19px;
+    }
+
+    .peak-score h3 {
+        font-size: 25px;
+    }
+
+}

@@ -1,0 +1,842 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Wanderly | My Itinerary</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="ite.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">Wanderly.</div>
+
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="destination.html">Destinations</a></li>
+            <li><a href="trips.html">My Trips</a></li>
+            <li><a href="itenary.html" class="active">My Itenary</a></li>
+            <li><a href="budget.html">Budget Tracker</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+
+        </ul>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        
+        <!-- ITINERARY HEADER -->
+        <section class="itinerary-header">
+            <p class="section-label">PLAN YOUR JOURNEY</p>
+            <h1>My Itinerary</h1>
+            <p>Organize your travel plans and make every moment memorable.</p>
+        </section>
+
+
+<!-- TRIP OVERVIEW -->
+<section class="trip-overview">
+
+    <div class="overview-heading">
+        <div>
+            <p class="section-label">YOUR TRAVEL PLAN</p>
+            <h2>Trip Overview</h2>
+        </div>
+
+        <span class="trip-status" id="itineraryStatus">
+            No Trip Selected
+        </span>
+    </div>
+
+    <div class="overview-card">
+
+        <div class="overview-image">
+            <img id="itineraryImage"
+                 src="trip.jpg"
+                 alt="Travel Destination">
+        </div>
+
+        <div class="overview-details">
+
+            <p class="destination-label">YOUR NEXT ADVENTURE</p>
+
+            <h3 id="itineraryTripName">Select Your Trip</h3>
+
+            <p class="overview-location" id="itineraryLocation">
+                📍 No destination selected
+            </p>
+
+            <div class="trip-info">
+
+                <div>
+                    <span>Travel Dates</span>
+                    <strong id="itineraryDates">-</strong>
+                </div>
+
+                <div>
+                    <span>Duration</span>
+                    <strong id="itineraryDuration">-</strong>
+                </div>
+
+                <div>
+                    <span>Travel Type</span>
+                    <strong id="itineraryType">Holiday</strong>
+                </div>
+
+            </div>
+
+          <div class="trip-selector">
+    <label for="itineraryTripSelect">Select Your Destination</label>
+
+    <select id="itineraryTripSelect">
+        <option value="">Choose a destination</option>
+        <option value="Switzerland">Switzerland</option>
+        <option value="San Francisco">San Francisco</option>
+        <option value="Japan">Japan</option>
+        <option value="South Korea">South Korea</option>
+        <option value="Paris">Paris</option>
+        <option value="London">London</option>
+        <option value="Bali">Bali</option>
+        <option value="Italy">Italy</option>
+    </select>
+</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- DAILY SCHEDULE -->
+<section class="daily-schedule">
+
+    <div class="schedule-heading">
+        <div>
+            <p class="section-label">PLAN EVERY MOMENT</p>
+            <h2>Daily Schedule</h2>
+            <p>Organize your activities throughout your journey.</p>
+        </div>
+    </div>
+
+    <!-- DAY TABS -->
+  
+
+<!-- DYNAMIC DAY TABS -->
+<div class="day-section">
+    <div class="day-tabs" id="dayTabs"></div>
+
+    <button type="button" class="add-day-btn" onclick="addDay()">
+        + Add Day
+    </button>
+</div>
+
+<button class="add-activity-btn" onclick="showActivityForm()">
+    + Add Activity
+</button>
+
+<div class="activity-form" id="activityForm" style="display: none;">
+    <h3>Add New Activity</h3>
+
+    <input type="text" id="activityName" placeholder="Activity name">
+
+    <input type="text" id="activityTime" placeholder="Time (e.g. 09:00 AM)">
+
+    <input type="text" id="activityLocation" placeholder="Location">
+
+    <textarea id="activityDescription" placeholder="Activity description"></textarea>
+
+    <button onclick="addActivity()">Save Activity</button>
+</div>
+
+
+    <!-- ACTIVITIES -->
+   
+
+<!-- ACTIVITIES -->
+<div class="activity-list" id="activityList">
+</div>
+
+</section>
+
+    </main>
+
+
+
+
+
+<script>
+
+
+// =====================================
+// WANDERLY - MY ITINERARY
+// =====================================
+
+let selectedTrip = null;
+let selectedTripKey = "";
+let currentDay = 1;
+let tripActivities = {};
+
+
+// =====================================
+// DESTINATIONS
+// =====================================
+
+const destinations = [
+    "Switzerland",
+    "San Francisco",
+    "Japan",
+    "South Korea",
+    "Paris",
+    "London",
+    "Bali",
+    "Italy"
+];
+
+
+// =====================================
+// TRIP IMAGES
+// =====================================
+
+const tripImages = {
+    "Switzerland": "swiss.jpeg",
+    "San Francisco": "san.jpg",
+    "Japan": "japan.jpg",
+    "South Korea": "korea.jpg",
+    "Paris": "paris.jpg",
+    "London": "london.jpg",
+    "Bali": "bali.jpg",
+    "Italy": "italy.jpg"
+};
+
+
+// =====================================
+// LOAD DESTINATIONS
+// =====================================
+
+function loadTrips() {
+
+    const tripSelect = document.getElementById("itineraryTripSelect");
+
+    tripSelect.innerHTML = '<option value="">Choose a destination</option>';
+
+    destinations.forEach(function(destination) {
+
+        const option = document.createElement("option");
+
+        option.value = destination;
+        option.textContent = destination;
+
+        tripSelect.appendChild(option);
+
+    });
+
+    resetItinerary();
+
+}
+
+
+// =====================================
+// RESET ITINERARY
+// =====================================
+
+function resetItinerary() {
+
+    selectedTrip = null;
+    selectedTripKey = "";
+    currentDay = 1;
+
+    document.getElementById("itineraryTripName").textContent =
+        "Select Your Destination";
+
+    document.getElementById("itineraryLocation").textContent =
+        "📍 Choose a destination to begin";
+
+    document.getElementById("itineraryDates").textContent = "-";
+
+    document.getElementById("itineraryDuration").textContent = "-";
+
+    document.getElementById("itineraryType").textContent = "Holiday";
+
+    document.getElementById("itineraryStatus").textContent =
+        "No Trip Selected";
+
+    document.getElementById("itineraryImage").src = "trip.jpg";
+
+    document.getElementById("dayTabs").innerHTML = "";
+
+    document.getElementById("activityList").innerHTML =
+        '<p class="empty-message">Select a destination to start planning your itinerary.</p>';
+
+    document.getElementById("activityForm").style.display = "none";
+
+}
+
+
+// =====================================
+// SELECT DESTINATION
+// =====================================
+
+function selectTrip(destination) {
+
+    if (!destination) {
+        resetItinerary();
+        return;
+    }
+
+    selectedTrip = {
+        name: destination + " Adventure",
+        location: destination,
+        date: "",
+        endDate: ""
+    };
+
+    selectedTripKey = destination;
+
+    updateTripOverview();
+
+    generateDayTabs();
+
+    loadTripActivities();
+
+}
+
+
+// =====================================
+// UPDATE TRIP OVERVIEW
+// =====================================
+
+function updateTripOverview() {
+
+    if (!selectedTrip) return;
+
+    document.getElementById("itineraryTripName").textContent =
+        selectedTrip.name;
+
+    document.getElementById("itineraryLocation").textContent =
+        "📍 " + selectedTrip.location;
+
+    document.getElementById("itineraryDates").textContent =
+        "Not set";
+
+    const duration = calculateDuration();
+
+    document.getElementById("itineraryDuration").textContent =
+        duration + (duration === 1 ? " Day" : " Days");
+
+    document.getElementById("itineraryType").textContent =
+        "Holiday";
+
+    document.getElementById("itineraryStatus").textContent =
+        "Destination Selected";
+
+    document.getElementById("itineraryImage").src =
+        tripImages[selectedTrip.location] || "trip.jpg";
+
+}
+
+
+// =====================================
+// CALCULATE TRIP DURATION
+// =====================================
+
+
+function calculateDuration() {
+
+    if (!selectedTrip || !selectedTripKey) {
+        return 3;
+    }
+
+    const savedDays = localStorage.getItem("wanderlyItineraryDays");
+
+    let itineraryDays = {};
+
+    try {
+        itineraryDays = savedDays ? JSON.parse(savedDays) : {};
+    } catch (error) {
+        itineraryDays = {};
+    }
+
+    return Number(itineraryDays[selectedTripKey]) || 3;
+
+}
+
+
+function addDay() {
+
+    if (!selectedTrip) {
+        alert("Please select a destination first!");
+        return;
+    }
+
+    const savedDays = localStorage.getItem("wanderlyItineraryDays");
+
+    let itineraryDays = {};
+
+    try {
+        itineraryDays = savedDays ? JSON.parse(savedDays) : {};
+    } catch (error) {
+        itineraryDays = {};
+    }
+
+    const totalDays = calculateDuration();
+
+    itineraryDays[selectedTripKey] = totalDays + 1;
+
+    localStorage.setItem(
+        "wanderlyItineraryDays",
+        JSON.stringify(itineraryDays)
+    );
+
+    generateDayTabs();
+
+    showDay(totalDays + 1);
+
+}
+
+// =====================================
+// GENERATE DAY TABS
+// =====================================
+
+function generateDayTabs() {
+
+    const dayTabs = document.getElementById("dayTabs");
+
+    dayTabs.innerHTML = "";
+
+    const totalDays = calculateDuration();
+
+    for (let day = 1; day <= totalDays; day++) {
+
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.className = "day-tab";
+        button.textContent = "Day " + day;
+
+        button.addEventListener("click", function() {
+            showDay(day);
+        });
+
+        dayTabs.appendChild(button);
+
+    }
+
+    currentDay = 1;
+
+    showDay(1);
+
+}
+
+
+// =====================================
+// SHOW SELECTED DAY
+// =====================================
+
+function showDay(dayNumber) {
+
+    currentDay = dayNumber;
+
+    const tabs = document.querySelectorAll(".day-tab");
+
+    tabs.forEach(function(tab, index) {
+
+        tab.classList.toggle(
+            "active",
+            index + 1 === dayNumber
+        );
+
+    });
+
+    const activities = document.querySelectorAll(".activity-card");
+
+    activities.forEach(function(card) {
+
+        card.style.display =
+            Number(card.dataset.day) === dayNumber ? "flex" : "none";
+
+    });
+
+    updateEmptyMessage();
+
+}
+
+
+// =====================================
+// SHOW EMPTY MESSAGE
+// =====================================
+
+function updateEmptyMessage() {
+
+    const activityList = document.getElementById("activityList");
+
+    const visibleActivities = Array.from(
+        activityList.querySelectorAll(".activity-card")
+    ).filter(function(card) {
+
+        return Number(card.dataset.day) === currentDay;
+
+    });
+
+    let message = activityList.querySelector(".empty-message");
+
+    if (visibleActivities.length === 0) {
+
+        if (!message) {
+
+            message = document.createElement("p");
+
+            message.className = "empty-message";
+
+            activityList.appendChild(message);
+
+        }
+
+        message.textContent =
+            "No activities planned for Day " + currentDay + " yet.";
+
+    } else if (message) {
+
+        message.remove();
+
+    }
+
+}
+
+
+// =====================================
+// SHOW ACTIVITY FORM
+// =====================================
+
+function showActivityForm() {
+
+    if (!selectedTrip) {
+
+        alert("Please select a destination first!");
+
+        return;
+
+    }
+
+    const form = document.getElementById("activityForm");
+
+    form.style.display = "block";
+
+    form.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+
+}
+
+
+// =====================================
+// CREATE ACTIVITY CARD
+// =====================================
+
+function createActivity(activity) {
+
+    const card = document.createElement("div");
+
+    card.className = "activity-card";
+
+    card.dataset.day = activity.day;
+
+    const time = document.createElement("div");
+
+    time.className = "activity-time";
+
+    time.textContent = activity.time;
+
+    const content = document.createElement("div");
+
+    content.className = "activity-content";
+
+    const name = document.createElement("h3");
+
+    name.textContent = activity.name;
+
+    const description = document.createElement("p");
+
+    description.textContent = activity.description;
+
+    const location = document.createElement("span");
+
+    location.textContent = "📍 " + activity.location;
+
+    content.appendChild(name);
+    content.appendChild(description);
+    content.appendChild(location);
+
+    const editButton = document.createElement("button");
+
+    editButton.type = "button";
+    editButton.className = "edit-activity-btn";
+    editButton.textContent = "✏️ Edit";
+
+    editButton.addEventListener("click", function() {
+        editActivity(card);
+    });
+
+    const deleteButton = document.createElement("button");
+
+    deleteButton.type = "button";
+    deleteButton.className = "delete-activity-btn";
+    deleteButton.textContent = "🗑 Delete";
+
+    deleteButton.addEventListener("click", function() {
+        deleteActivity(card);
+    });
+
+    card.appendChild(time);
+    card.appendChild(content);
+    card.appendChild(editButton);
+    card.appendChild(deleteButton);
+
+    return card;
+
+}
+
+
+// =====================================
+// LOAD ACTIVITIES
+// =====================================
+
+
+function loadTripActivities() {
+
+    const activityList = document.getElementById("activityList");
+
+    activityList.innerHTML = "";
+
+    const savedData = localStorage.getItem(
+        "wanderlyItineraryActivities"
+    );
+
+    try {
+        tripActivities = savedData ? JSON.parse(savedData) : {};
+    } catch (error) {
+        tripActivities = {};
+    }
+
+    const activities = tripActivities[selectedTripKey] || [];
+
+    activities.forEach(function(activity) {
+        activityList.appendChild(createActivity(activity));
+    });
+
+    showDay(1);
+
+}
+
+
+
+// =====================================
+// SAVE ACTIVITIES
+// =====================================
+
+
+function saveActivities() {
+
+    if (!selectedTrip || !selectedTripKey) return;
+
+    const activities = [];
+
+    document.querySelectorAll(".activity-card").forEach(function(card) {
+
+        activities.push({
+            day: Number(card.dataset.day),
+            time: card.querySelector(".activity-time").textContent,
+            name: card.querySelector("h3").textContent,
+            description: card.querySelector("p").textContent,
+            location: card.querySelector("span").textContent.replace("📍 ", "")
+        });
+
+    });
+
+    tripActivities[selectedTripKey] = activities;
+
+    localStorage.setItem(
+        "wanderlyItineraryActivities",
+        JSON.stringify(tripActivities)
+    );
+
+}
+
+
+// =====================================
+// ADD NEW ACTIVITY
+// =====================================
+
+function addActivity() {
+
+    const name = document.getElementById("activityName").value.trim();
+
+    const time = document.getElementById("activityTime").value.trim();
+
+    const location = document.getElementById("activityLocation").value.trim();
+
+    const description = document.getElementById("activityDescription").value.trim();
+
+    if (!selectedTrip) {
+
+        alert("Please select a destination first!");
+
+        return;
+
+    }
+
+    if (!name || !time || !location) {
+
+        alert("Please fill in the activity name, time and location!");
+
+        return;
+
+    }
+
+    const newActivity = {
+
+        day: currentDay,
+
+        name: name,
+
+        time: time,
+
+        location: location,
+
+        description: description
+
+    };
+
+    const activityList = document.getElementById("activityList");
+
+    const message = activityList.querySelector(".empty-message");
+
+    if (message) {
+        message.remove();
+    }
+
+    activityList.appendChild(createActivity(newActivity));
+
+    saveActivities();
+
+    showDay(currentDay);
+
+    document.getElementById("activityName").value = "";
+
+    document.getElementById("activityTime").value = "";
+
+    document.getElementById("activityLocation").value = "";
+
+    document.getElementById("activityDescription").value = "";
+
+    document.getElementById("activityForm").style.display = "none";
+
+}
+
+
+// =====================================
+// EDIT ACTIVITY
+// =====================================
+
+function editActivity(card) {
+
+    const currentName = card.querySelector("h3").textContent;
+
+    const currentTime = card.querySelector(".activity-time").textContent;
+
+    const currentDescription = card.querySelector("p").textContent;
+
+    const currentLocation = card.querySelector("span").textContent.replace("📍 ", "");
+
+    const newName = prompt("Enter activity name:", currentName);
+
+    if (newName === null || newName.trim() === "") return;
+
+    const newTime = prompt("Enter activity time:", currentTime);
+
+    if (newTime === null || newTime.trim() === "") return;
+
+    const newLocation = prompt("Enter location:", currentLocation);
+
+    if (newLocation === null || newLocation.trim() === "") return;
+
+    const newDescription = prompt("Enter description:", currentDescription);
+
+    if (newDescription === null) return;
+
+    card.querySelector("h3").textContent = newName.trim();
+
+    card.querySelector(".activity-time").textContent = newTime.trim();
+
+    card.querySelector("span").textContent =
+        "📍 " + newLocation.trim();
+
+    card.querySelector("p").textContent = newDescription.trim();
+
+    saveActivities();
+
+    alert("Activity updated successfully!");
+
+}
+
+
+// =====================================
+// DELETE ACTIVITY
+// =====================================
+
+function deleteActivity(card) {
+
+    const confirmation = confirm(
+        "Are you sure you want to delete this activity?"
+    );
+
+    if (confirmation) {
+
+        card.remove();
+
+        saveActivities();
+
+        updateEmptyMessage();
+
+    }
+
+}
+
+
+// =====================================
+// PAGE INITIALIZATION
+// =====================================
+
+window.addEventListener("DOMContentLoaded", function() {
+
+    loadTrips();
+
+    const tripSelect = document.getElementById("itineraryTripSelect");
+
+    tripSelect.addEventListener("change", function() {
+
+        selectTrip(this.value);
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
