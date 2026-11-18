@@ -61,6 +61,11 @@ function setupRegister() {
 // LOGIN FUNCTION
 // =====================================
 
+
+// =====================================
+// LOGIN FUNCTION - DEMO ACCOUNT
+// =====================================
+
 function setupLogin() {
     const loginForm = document.getElementById("loginForm");
 
@@ -73,10 +78,30 @@ function setupLogin() {
         const password = document.getElementById("password").value;
         const errorMessage = document.getElementById("errorMessage");
 
+        // HARDCODED DEMO LOGIN
+        const demoUsername = "user";
+        const demoPassword = "user123";
+
+        // CHECK DEMO ACCOUNT
+        if (
+            username === demoUsername &&
+            password === demoPassword
+        ) {
+            localStorage.setItem("wanderlyLoggedIn", "true");
+
+            alert("Login successful! Welcome to Wanderly.");
+
+            window.location.href = "dashboard.html";
+            return;
+        }
+
+        // CHECK REGISTERED ACCOUNT
         let savedUser = null;
 
         try {
-            savedUser = JSON.parse(localStorage.getItem("wanderlyUser"));
+            savedUser = JSON.parse(
+                localStorage.getItem("wanderlyUser")
+            );
         } catch (error) {
             savedUser = null;
         }
@@ -89,6 +114,7 @@ function setupLogin() {
             localStorage.setItem("wanderlyLoggedIn", "true");
 
             alert("Login successful! Welcome to Wanderly.");
+
             window.location.href = "dashboard.html";
 
         } else {
@@ -99,6 +125,7 @@ function setupLogin() {
         }
     });
 }
+
 
 
 // =====================================
