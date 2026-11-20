@@ -1,0 +1,388 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Wanderly | My Profile</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="pro.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">Wanderly.</div>
+
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="destination.html">Destinations</a></li>
+            <li><a href="trips.html">My Trips</a></li>
+            <li><a href="itenary.html">My Itenary</a></li>
+            <li><a href="budget.html">Budget Tracker</a></li>
+            <li><a href="profile.html" class="active">Profile</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+        </ul>
+    </nav>
+
+
+    <!-- PROFILE HEADER -->
+    <section class="profile-header">
+        <p class="section-label">YOUR PERSONAL SPACE</p>
+        <h1>My Profile</h1>
+        <p>Manage your personal information and travel preferences.</p>
+    </section>
+
+
+    <!-- PROFILE CONTENT -->
+    <section class="profile-container">
+
+        <div class="profile-card">
+
+            <div class="profile-avatar">
+                <span>W</span>
+            </div>
+
+            <h2 id="displayName">Traveler</h2>
+            <p class="profile-role">Wanderly Traveller</p>
+
+            <button class="edit-profile-btn" onclick="editProfile()">
+                Edit Profile
+            </button>
+
+        </div>
+
+
+        <!-- PERSONAL INFORMATION -->
+        <div class="profile-details">
+
+            <div class="details-heading">
+                <div>
+                    <p class="section-label">ACCOUNT DETAILS</p>
+                    <h2>Personal Information</h2>
+                </div>
+            </div>
+
+            <div class="details-grid">
+
+                <div class="detail-item">
+                    <label>Full Name</label>
+                    <p id="fullName">Not provided</p>
+                </div>
+
+                <div class="detail-item">
+                    <label>Email Address</label>
+                    <p id="emailAddress">Not provided</p>
+                </div>
+
+                <div class="detail-item">
+                    <label>Phone Number</label>
+                    <p id="phoneNumber">Not provided</p>
+                </div>
+
+                <div class="detail-item">
+                    <label>Country</label>
+                    <p id="country">Not provided</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TRAVEL PREFERENCES -->
+        <div class="profile-details preferences-card">
+
+            <p class="section-label">TRAVEL STYLE</p>
+            <h2>Travel Preferences</h2>
+
+            <div class="preference-list">
+                <div class="preference-item">
+                    <span>✈️</span>
+                    <div>
+                        <strong>Favourite Destination</strong>
+                        <p id="favouriteDestination">Not selected</p>
+                    </div>
+                </div>
+
+                <div class="preference-item">
+                    <span>🌍</span>
+                    <div>
+                        <strong>Travel Style</strong>
+                        <p id="travelStyle">Not selected</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+<script>
+
+
+/* =====================================
+   WANDERLY - PROFILE
+===================================== */
+
+const profileFields = [
+    { id: "fullName", label: "Full Name" },
+    { id: "emailAddress", label: "Email Address" },
+    { id: "phoneNumber", label: "Phone Number" },
+    { id: "country", label: "Country" },
+    { id: "favouriteDestination", label: "Favourite Destination" },
+    { id: "travelStyle", label: "Travel Style" }
+];
+
+
+// =====================================
+// UPDATE PROFILE HEADER
+// =====================================
+
+function updateProfileHeader() {
+
+    const nameElement = document.getElementById("fullName");
+    const displayName = document.getElementById("displayName");
+    const avatar = document.querySelector(".profile-avatar span");
+
+    const userName = nameElement
+        ? nameElement.textContent.trim()
+        : "";
+
+    const finalName = userName && userName !== "Not provided"
+        ? userName
+        : "Traveler";
+
+    if (displayName) {
+        displayName.textContent = finalName;
+    }
+
+    if (avatar) {
+        avatar.textContent = finalName.charAt(0).toUpperCase();
+    }
+}
+
+
+// =====================================
+// GET PROFILE DATA
+// =====================================
+
+function getProfileData() {
+
+    const profileData = {};
+
+    profileFields.forEach(function(field) {
+
+        const element = document.getElementById(field.id);
+
+        if (element) {
+            profileData[field.id] = element.textContent.trim();
+        }
+
+    });
+
+    return profileData;
+}
+
+
+// =====================================
+// DISPLAY PROFILE DATA
+// =====================================
+
+function displayProfileData(data) {
+
+    profileFields.forEach(function(field) {
+
+        const element = document.getElementById(field.id);
+
+        if (element && data[field.id]) {
+            element.textContent = data[field.id];
+        }
+
+    });
+
+    updateProfileHeader();
+}
+
+
+// =====================================
+// SAVE PROFILE TO FIREBASE
+// =====================================
+
+async function saveProfileToFirebase(profileData) {
+
+    try {
+
+        await window.db
+            .collection("profiles")
+            .doc("shared")
+            .set({
+                ...profileData,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+        localStorage.setItem(
+            "wanderlyProfile",
+            JSON.stringify(profileData)
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error("Error saving profile:", error);
+
+        alert("Unable to save profile to Firebase. Please try again.");
+
+        return false;
+    }
+}
+
+
+// =====================================
+// EDIT PROFILE
+// =====================================
+
+async function editProfile() {
+
+    const updatedData = getProfileData();
+
+    for (const field of profileFields) {
+
+        const newValue = prompt(
+            "Enter your " + field.label + ":",
+            updatedData[field.id] || "Not provided"
+        );
+
+        if (newValue === null) {
+            return;
+        }
+
+        if (newValue.trim() !== "") {
+            updatedData[field.id] = newValue.trim();
+        }
+
+    }
+
+    const saved = await saveProfileToFirebase(updatedData);
+
+    if (saved) {
+
+        displayProfileData(updatedData);
+
+        alert("Profile updated successfully!");
+
+    }
+}
+
+
+// =====================================
+// LOAD PROFILE FROM FIREBASE
+// =====================================
+
+async function loadProfileFromFirebase() {
+
+    try {
+
+        const profileRef = window.db
+            .collection("profiles")
+            .doc("shared");
+
+        const doc = await profileRef.get();
+
+        if (doc.exists) {
+
+            const profileData = doc.data();
+
+            displayProfileData(profileData);
+
+            localStorage.setItem(
+                "wanderlyProfile",
+                JSON.stringify(profileData)
+            );
+
+        } else {
+
+            // MIGRATE EXISTING LOCAL PROFILE
+
+            const savedProfile = JSON.parse(
+                localStorage.getItem("wanderlyProfile") || "{}"
+            );
+
+            if (Object.keys(savedProfile).length > 0) {
+
+                await saveProfileToFirebase(savedProfile);
+
+                displayProfileData(savedProfile);
+
+            } else {
+
+                updateProfileHeader();
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error("Error loading profile:", error);
+
+        alert("Unable to load profile from Firebase. Please check your connection.");
+
+        // DISPLAY LOCAL SAVED DATA AS FALLBACK
+
+        const savedProfile = JSON.parse(
+            localStorage.getItem("wanderlyProfile") || "{}"
+        );
+
+        displayProfileData(savedProfile);
+
+    }
+}
+
+
+// =====================================
+// LOGOUT
+// =====================================
+
+function logout() {
+
+    const confirmLogout = confirm(
+        "Are you sure you want to logout?"
+    );
+
+    if (confirmLogout) {
+
+        localStorage.removeItem("wanderlyLoggedIn");
+
+        alert("You have successfully logged out!");
+
+        window.location.href = "index.html";
+    }
+}
+
+
+// =====================================
+// INITIALIZE PROFILE
+// =====================================
+
+window.addEventListener("DOMContentLoaded", function() {
+
+    loadProfileFromFirebase();
+
+});
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+</body>
+</html>
